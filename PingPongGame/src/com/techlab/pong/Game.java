@@ -7,6 +7,8 @@ public class Game {
 	public static int paddleX=100;
 	public static int leftScore=0;
 	public static int rightScore=0;
+	public final static int winScore=6;
+	
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -16,24 +18,56 @@ public class Game {
 		
 		Paddle paddleLeft=new Paddle(paddleX, Window.height()/2, 'w', 's');
 		Paddle paddleRight=new Paddle(Window.width()-paddleX, Window.height()/2, 'i', 'k');
-		
+		int scoreFont=50;
 		startScreen();
 		while(true) {
 			Window.out.background("light blue");
-			ball.draw();
-			paddleLeft.draw();
-			paddleRight.draw();
 			ball.move();
 			paddleLeft.move();
 			paddleRight.move();
 			ball.reflect(paddleLeft);
 			ball.reflect(paddleRight);
+			ball.reset();
+			ball.draw();
+			paddleLeft.draw();
+			paddleRight.draw();
+			Window.out.color("black");
+			Window.out.fontSize(scoreFont);
+			Window.out.print("Score   "+ leftScore + "  :  "+ rightScore, Window.width()/2-2*scoreFont, Window.height()/5);
+			
+
+			if(leftScore>=winScore/2 && rightScore>=winScore/2) {
+				ball.increaseSpeed();
+			}
+			if(leftScore==winScore || rightScore==winScore) {
+				restart();
+				ball.reset();
+				paddleLeft.reset(paddleX,Window.height()/2);
+				paddleRight.reset(Window.width()-paddleX, Window.height()/2);
+			}
 			Window.frame();
 		}
 		
 	}
 	
-	public static void startScreen() {
+	private static void restart() {
+		boolean enterKey=false;
+		while(!enterKey) {
+			if(Window.key.pressed("space")) {
+				enterKey=true;
+				leftScore=0;
+				rightScore=0;
+			}
+			Window.out.background("black");
+			Window.out.color("red");
+			Window.out.fontSize(50);
+			Window.out.print("Press space If you wish to play Again   ", paddleX, Window.height()/2);
+			Window.frame();
+			
+		}
+	}
+
+	private static void startScreen() {
 		int counter=3;
 		int fontchar=20;
 		while(counter>0) {

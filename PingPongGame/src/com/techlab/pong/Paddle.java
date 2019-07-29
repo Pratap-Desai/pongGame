@@ -46,4 +46,9 @@ public class Paddle {
 	}
 	
 
+	public void reset(int x, int y) {
+
+		this.x=x;
+		this.y=y;
+	}
 }

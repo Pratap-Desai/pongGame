@@ -8,36 +8,44 @@ public class Ball {
 	int y,dy;
 	int radius;
 	String color;
-	
+	final int speed=10;
+	int varyspeed;
+
 	public Ball() {
 		x=Window.width()/2;
 		y=Window.height()/2;
-		dx=10;
-		dy=10;
+		varyspeed=speed;
+		dx=varyspeed;
+		dy=varyspeed;
 		randomize();
 		radius=25;
 		color="yellow";
 	}
-	
+
+	public void increaseSpeed() {
+		varyspeed=varyspeed+2;
+	}
 	private void randomize() {
 		int check=Window.rollDice(4);
 		switch(check) {
 		case 1: {
-			dx=-dx;
+			dx=varyspeed;
+			dy=varyspeed;
 			break;
 		}
 		case 2: {
-			dy=-dy;
+			dx=varyspeed;
+			dy=-varyspeed;
 			break;
 		}
 		case 3: {
-			dx=-dx;
-			dy=-dy;
+			dx=-varyspeed;
+			dy=varyspeed;
 			break;
 		}
 		case 4: {
-			dx=-dx;
-			dy=dy;
+			dx=-varyspeed;
+			dy=-varyspeed;
 			break;
 		}
 		}
@@ -81,12 +89,14 @@ public class Ball {
 	private void resetValues() {
 		x=Window.width()/2;
 		y=Window.height()/2;
+		varyspeed=speed;
+		randomize();
 	}
 	public void reset() {
-		if(x+radius > Game.paddleX+Paddle.width/2) {
+		if(x- radius > Window.width()- Game.paddleX+Paddle.width/2) {
 			Game.leftScore++;
 			resetValues();
-		}else if(x+radius > Game.paddleX+Paddle.width/2) {
+		}else if(x+radius < Game.paddleX-Paddle.width/2) {
 			Game.rightScore++;
 			resetValues();
 		}
